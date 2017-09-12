@@ -6,9 +6,10 @@ export function Search(props) {
       props.onClick(document.getElementById('search-text').value);
     }
   }
+  
   return (
     <div className="search-bar">
-      <input id="search-text" type="text" onKeyUp={(e) => handleKeyPress(e)}/>
+      <input id="search-text" type="text" placeholder="Search a movie" onKeyUp={(e) => handleKeyPress(e)}/>
       <button className="btn hidden-sm-down" onClick={() => props.onClick(document.getElementById('search-text').value)}>
         <span className="search-button-text">Search</span>
       </button>

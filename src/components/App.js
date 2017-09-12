@@ -1,17 +1,18 @@
 import React from 'react';
 import { MovieEntry } from './MovieEntry';
-import { Search } from './Search'
+import { Search } from './Search';
+import { AddMovie } from './AddMovie';
 
 export class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      totalMovies: props.movies,
-      movies: props.movies,
+      totalMovies: [],
+      movies: [],
     }
   }
 
-  handleSearchClick (text) {
+  handleSearchClick(text) {
     const allMovies = this.state.totalMovies;
     const newCur = [];
     const re = new RegExp(text, 'gi');
@@ -27,9 +28,20 @@ export class App extends React.Component {
     this.setState({movies: newCur});
   }
 
+  handleAddClick(text) {
+    const obj = {};
+    obj.title = text;
+    const newArr = this.state.totalMovies.slice();
+    newArr.push(obj);
+    this.setState({totalMovies: newArr, movies: newArr})
+  }
+
   render() {
     return (
       <div>
+        <div className="addContainer">
+          <AddMovie onClick={(text) => this.handleAddClick(text)}/>
+        </div>
         <div className="searchContainer">
           <Search onClick={(text) => this.handleSearchClick(text)}/>
         </div>
