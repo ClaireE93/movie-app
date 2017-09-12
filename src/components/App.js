@@ -7,7 +7,6 @@ export class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      totalMovies: [],
       movies: [],
       watched: [],
       unwatched: [],
@@ -46,7 +45,17 @@ export class App extends React.Component {
   }
 
   handleFilterButtonClick(isWatched) {
+    if (this.state.watchFilter === isWatched) { return; }
+    this.setState({watchFilter: isWatched});
+    if (isWatched) {
+      this.setState({movies: this.state.watched.slice()});
+    } else {
+      this.setState({movies: this.state.unwatched.slice()});
+    }
+  }
 
+  handleWatchedButtonClick(index) {
+    console.log('clicked on', index);
   }
 
   render() {
@@ -59,12 +68,12 @@ export class App extends React.Component {
           <Search onClick={(text) => this.handleSearchClick(text)}/>
         </div>
         <div className="filterContainer">
-          <button onClick={() => this.handleFilterButtonClick(true)}>Watched</button>
           <button onClick={() => this.handleFilterButtonClick(false)}>Unwatched</button>
+          <button onClick={() => this.handleFilterButtonClick(true)}>Watched</button>
         </div>
         <div className="movieList">
-          {this.state.movies.map((movie) => (
-            <MovieEntry key={movie.title} movie={movie}/>
+          {this.state.movies.map((movie, index) => (
+            <MovieEntry key={movie.title} id={index} movie={movie} buttonClick={this.handleWatchedButtonClick}/>
           ))}
         </div>
       </div>
