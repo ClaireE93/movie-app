@@ -1,0 +1,19 @@
+
+
+h1 {
+    font-size: 20px;
+}
+
+.movie-entry {
+    border: 1px solid black;
+    width: 25%;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.movieList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}

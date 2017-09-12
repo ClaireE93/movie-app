@@ -1,5 +1,5 @@
 import React from 'react';
-// import { MovieEntry } from './MovieEntry'
+import { MovieEntry } from './MovieEntry'
 
 export class App extends React.Component {
   constructor(props) {
@@ -13,9 +13,9 @@ export class App extends React.Component {
     return (
       <div>
         <div className="movieList">
-          {/* {props.movies.map((movie) => (
-            // <MovieEntry key={movie.title} movie={movie}/>
-          ))} */}
+          {this.state.movies.map((movie) => (
+            <MovieEntry key={movie.title} movie={movie}/>
+          ))}
         </div>
       </div>
   );
