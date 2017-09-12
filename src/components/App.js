@@ -9,11 +9,14 @@ export class App extends React.Component {
     this.state = {
       totalMovies: [],
       movies: [],
+      watched: [],
+      unwatched: [],
+      watchFilter: false,
     }
   }
 
   handleSearchClick(text) {
-    const allMovies = this.state.totalMovies;
+    const allMovies = this.state.watched.concat(this.state.unwatched);
     const newCur = [];
     const re = new RegExp(text, 'gi');
     for (let movie of allMovies) {
@@ -31,9 +34,19 @@ export class App extends React.Component {
   handleAddClick(text) {
     const obj = {};
     obj.title = text;
-    const newArr = this.state.totalMovies.slice();
+    obj.watched = false;
+    const newArr = this.state.unwatched.slice();
     newArr.push(obj);
-    this.setState({totalMovies: newArr, movies: newArr})
+    if (!this.state.watchFilter) {
+      this.setState({unwatched: newArr, movies: newArr});
+    } else {
+      this.setState({unwatched: newArr});
+    }
+
+  }
+
+  handleFilterButtonClick(isWatched) {
+
   }
 
   render() {
@@ -44,6 +57,10 @@ export class App extends React.Component {
         </div>
         <div className="searchContainer">
           <Search onClick={(text) => this.handleSearchClick(text)}/>
+        </div>
+        <div className="filterContainer">
+          <button onClick={() => this.handleFilterButtonClick(true)}>Watched</button>
+          <button onClick={() => this.handleFilterButtonClick(false)}>Unwatched</button>
         </div>
         <div className="movieList">
           {this.state.movies.map((movie) => (
