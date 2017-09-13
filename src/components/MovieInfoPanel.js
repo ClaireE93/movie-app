@@ -28,10 +28,10 @@ export class MovieInfoPanel extends React.Component {
         <div className={this.state.display ? 'detailsVisible' : 'detailsHidden'}>
           <div>Description: {this.props.movie.description}</div>
           <div>Year: {this.props.movie.year}</div>
+          <div>Rating: {this.props.movie.rating}</div>
           <button onClick={() => this.handleButtonClick()}>{this.props.movie.watched ? "Watched" : "Unwatched"}</button>
         </div>
       </div>
     );
   }
-
 }

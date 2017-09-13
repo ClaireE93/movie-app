@@ -5,7 +5,7 @@ h1 {
 
 .movie-entry {
     border: 1px solid black;
-    width: 25%;
+    width: 50%;
     font-size: 20px;
     padding: 10px;
 }
@@ -17,11 +17,15 @@ h1 {
     align-items: flex-start;
 }
 
-.detailsHidden {
-    display: none;
-}
-
-.detailsVisible {
-    display: block;
+.detailsHidden, .detailsVisible {
     font-size: 15px;
+    max-height: 0;
+    overflow-y: hidden;
+    -webkit-transition: max-height 0.5s ease-in-out;
+    -moz-transition: max-height 0.5s ease-in-out;
+    -o-transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out;
+}
+.detailsVisible {
+    max-height: 100px;
 }

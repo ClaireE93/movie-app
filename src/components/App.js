@@ -7,10 +7,10 @@ export class App extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      movies: props.movies,
-      unwatched: props.movies,
-      // movies: [],
-      // unwatched: [],
+      // movies: props.movies,
+      // unwatched: props.movies,
+      movies: [],
+      unwatched: [],
       watched: [],
       watchFilter: false,
     }
@@ -33,16 +33,36 @@ export class App extends React.Component {
   }
 
   handleAddClick(text) {
+    netflixroulette.createRequest(text, (resp) => {
+      this.parseResponse(resp);
+    })
+    // const obj = {};
+    // obj.title = text;
+    // obj.watched = false;
+    // const newArr = this.state.unwatched.slice();
+    // newArr.push(obj);
+    // if (!this.state.watchFilter) {
+    //   this.setState({unwatched: newArr, movies: newArr});
+    // } else {
+    //   this.setState({unwatched: newArr});
+    // }
+  }
+
+  parseResponse(resp) {
+    // console.log('parsing', obj);
     const obj = {};
-    obj.title = text;
-    obj.watched = false;
+    obj.title = resp['show_title'];
+    obj.year = resp['release_year'];
+    obj.rating = resp.rating;
+    obj.description = resp.summary;
+
     const newArr = this.state.unwatched.slice();
-    newArr.push(obj);
-    if (!this.state.watchFilter) {
-      this.setState({unwatched: newArr, movies: newArr});
-    } else {
-      this.setState({unwatched: newArr});
-    }
+   newArr.push(obj);
+   if (!this.state.watchFilter) {
+     this.setState({unwatched: newArr, movies: newArr});
+   } else {
+     this.setState({unwatched: newArr});
+   }
 
   }
 
