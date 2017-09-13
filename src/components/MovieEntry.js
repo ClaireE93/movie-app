@@ -1,26 +1,18 @@
 import React from 'react';
 
 export class MovieEntry extends React.Component {
-  constructor(props) {
-    super();
-    this.state = {
-      movie: props.movie,
-      id: props.id,
-      watched: props.movie.watched,
-    }
-  }
 
   handleButtonClick () {
-    const cur = this.state.watched;
+    const cur = this.props.movie.watched;
     this.setState({watched: !cur});
-    this.props.buttonClick(this.state.id)
+    this.props.buttonClick(this.props.id);
   }
 
   render() {
     return (
       <div className="movie-entry">
-        {this.state.movie.title}
-        <button onClick={() => this.handleButtonClick()}>{this.state.watched ? "Watched" : "Unwatched"}</button>
+        {this.props.movie.title}
+        <button onClick={() => this.handleButtonClick()}>{this.props.movie.watched ? "Watched" : "Unwatched"}</button>
       </div>
     );
   }

@@ -15,7 +15,7 @@ export class App extends React.Component {
   }
 
   handleSearchClick(text) {
-    const allMovies = this.state.watched.concat(this.state.unwatched);
+    const allMovies = this.state.watchFilter ? this.state.watched.slice() : this.state.unwatched.slice()
     const newCur = [];
     const re = new RegExp(text, 'gi');
     for (let movie of allMovies) {
@@ -55,7 +55,22 @@ export class App extends React.Component {
   }
 
   handleWatchedButtonClick(index) {
-    console.log('clicked on', index);
+    const curObj = this.state.movies[index];
+    const curStatus = curObj.watched;
+    const newObj = Object.assign({}, curObj, {watched: !curStatus});
+    if (this.state.watchFilter) {
+      const curArr = this.state.watched;
+      curArr.splice(index, 1);
+      const newArr = this.state.unwatched;
+      newArr.push(newObj);
+      this.setState({movies: curArr, unwatched: newArr, watched: curArr});
+    } else {
+      const curArr = this.state.unwatched;
+      curArr.splice(index, 1);
+      const newArr = this.state.watched;
+      newArr.push(newObj);
+      this.setState({movies: curArr, unwatched: curArr, watched: newArr});
+    }
   }
 
   render() {
@@ -73,7 +88,7 @@ export class App extends React.Component {
         </div>
         <div className="movieList">
           {this.state.movies.map((movie, index) => (
-            <MovieEntry key={movie.title} id={index} movie={movie} buttonClick={this.handleWatchedButtonClick}/>
+            <MovieEntry key={movie.title} id={index} movie={movie} buttonClick={this.handleWatchedButtonClick.bind(this)}/>
           ))}
         </div>
       </div>
