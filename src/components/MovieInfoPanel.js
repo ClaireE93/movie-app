@@ -13,6 +13,12 @@ export class MovieInfoPanel extends React.Component {
     this.setState({display: !curDisplay});
   }
 
+  handleButtonClick () {
+    const cur = this.props.movie.watched;
+    this.setState({watched: !cur});
+    this.props.buttonClick(this.props.id);
+  }
+
   render() {
     return (
       <div>
@@ -22,11 +28,10 @@ export class MovieInfoPanel extends React.Component {
         <div className={this.state.display ? 'detailsVisible' : 'detailsHidden'}>
           <div>Description: {this.props.movie.description}</div>
           <div>Year: {this.props.movie.year}</div>
+          <button onClick={() => this.handleButtonClick()}>{this.props.movie.watched ? "Watched" : "Unwatched"}</button>
         </div>
       </div>
     );
   }
 
 }
-
-// { this.props.selected === this.props.className ? 'selected ' + this.props.className : this.props.className }
