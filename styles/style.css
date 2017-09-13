@@ -27,5 +27,5 @@ h1 {
     transition: max-height 0.5s ease-in-out;
 }
 .detailsVisible {
-    max-height: 100px;
+    max-height: 1000px;
 }

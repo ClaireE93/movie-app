@@ -49,21 +49,20 @@ export class App extends React.Component {
   }
 
   parseResponse(resp) {
-    // console.log('parsing', obj);
     const obj = {};
     obj.title = resp['show_title'];
     obj.year = resp['release_year'];
     obj.rating = resp.rating;
     obj.description = resp.summary;
+    obj.poster = resp.poster;
 
     const newArr = this.state.unwatched.slice();
-   newArr.push(obj);
-   if (!this.state.watchFilter) {
+    newArr.push(obj);
+    if (!this.state.watchFilter) {
      this.setState({unwatched: newArr, movies: newArr});
-   } else {
+    } else {
      this.setState({unwatched: newArr});
-   }
-
+    }
   }
 
   handleFilterButtonClick(isWatched) {

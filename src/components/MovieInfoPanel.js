@@ -26,6 +26,7 @@ export class MovieInfoPanel extends React.Component {
           {this.props.movie.title}
         </div>
         <div className={this.state.display ? 'detailsVisible' : 'detailsHidden'}>
+          <img src={this.props.movie.poster}/>
           <div>Description: {this.props.movie.description}</div>
           <div>Year: {this.props.movie.year}</div>
           <div>Rating: {this.props.movie.rating}</div>
