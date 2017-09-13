@@ -1,5 +1,4 @@
 import React from 'react';
-import { MovieInfoPanel } from './MovieInfoPanel'
 
 export class MovieEntry extends React.Component {
 
@@ -12,7 +11,7 @@ export class MovieEntry extends React.Component {
   render() {
     return (
       <div className="movie-entry">
-        <MovieInfoPanel movie={this.props.movie}/>
+        {this.props.movie.title}
         <button onClick={() => this.handleButtonClick()}>{this.props.movie.watched ? "Watched" : "Unwatched"}</button>
       </div>
     );

@@ -76,7 +76,7 @@ export class App extends React.Component {
   render() {
     return (
       <div>
-        {/* <div className="addContainer">
+        <div className="addContainer">
           <AddMovie onClick={(text) => this.handleAddClick(text)}/>
         </div>
         <div className="searchContainer">
@@ -90,7 +90,7 @@ export class App extends React.Component {
           {this.state.movies.map((movie, index) => (
             <MovieEntry key={movie.title} id={index} movie={movie} buttonClick={this.handleWatchedButtonClick.bind(this)}/>
           ))}
-        </div> */}
+        </div>
       </div>
   );
   }
