@@ -1,5 +1,4 @@
 
-
 h1 {
     font-size: 20px;
 }
@@ -16,4 +15,13 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+}
+
+.detailsHidden {
+    display: none;
+}
+
+.detailsVisible {
+    display: block;
+    font-size: 15px;
 }

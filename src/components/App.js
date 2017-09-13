@@ -4,12 +4,14 @@ import { Search } from './Search';
 import { AddMovie } from './AddMovie';
 
 export class App extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      movies: [],
+      movies: props.movies,
+      unwatched: props.movies,
+      // movies: [],
+      // unwatched: [],
       watched: [],
-      unwatched: [],
       watchFilter: false,
     }
   }

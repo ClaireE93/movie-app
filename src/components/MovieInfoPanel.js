@@ -14,20 +14,19 @@ export class MovieInfoPanel extends React.Component {
   }
 
   render() {
-    const classes = {
-      "details-hidden": !this.state.display,
-      "details-visible": this.state.display,
-    };
     return (
       <div>
         <div className="movie-title" onClick={() => this.handleTitleClick()}>
           {this.props.movie.title}
         </div>
-        <div className={classes}>
-
+        <div className={this.state.display ? 'detailsVisible' : 'detailsHidden'}>
+          <div>Description: {this.props.movie.description}</div>
+          <div>Year: {this.props.movie.year}</div>
         </div>
       </div>
     );
   }
 
 }
+
+// { this.props.selected === this.props.className ? 'selected ' + this.props.className : this.props.className }
