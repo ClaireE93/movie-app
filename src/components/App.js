@@ -7,8 +7,6 @@ export class App extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      // movies: props.movies,
-      // unwatched: props.movies,
       movies: [],
       unwatched: [],
       watched: [],
@@ -35,17 +33,7 @@ export class App extends React.Component {
   handleAddClick(text) {
     netflixroulette.createRequest(text, (resp) => {
       this.parseResponse(resp);
-    })
-    // const obj = {};
-    // obj.title = text;
-    // obj.watched = false;
-    // const newArr = this.state.unwatched.slice();
-    // newArr.push(obj);
-    // if (!this.state.watchFilter) {
-    //   this.setState({unwatched: newArr, movies: newArr});
-    // } else {
-    //   this.setState({unwatched: newArr});
-    // }
+    });
   }
 
   parseResponse(resp) {
@@ -104,8 +92,8 @@ export class App extends React.Component {
           <Search onClick={(text) => this.handleSearchClick(text)}/>
         </div>
         <div className="filterContainer">
-          <button onClick={() => this.handleFilterButtonClick(false)}>Unwatched</button>
-          <button onClick={() => this.handleFilterButtonClick(true)}>Watched</button>
+          <button className="filter" onClick={() => this.handleFilterButtonClick(false)}>Unwatched</button>
+          <button className="filter" onClick={() => this.handleFilterButtonClick(true)}>Watched</button>
         </div>
         <div className="movieList">
           {this.state.movies.map((movie, index) => (
