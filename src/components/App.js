@@ -2,6 +2,7 @@ import React from 'react';
 import { MovieEntry } from './MovieEntry';
 import { Search } from './Search';
 import { AddMovie } from './AddMovie';
+import 'whatwg-fetch';
 
 export class App extends React.Component {
   constructor(props) {
@@ -31,14 +32,23 @@ export class App extends React.Component {
   }
 
   handleAddClick(text) {
-    netflixroulette.createRequest(text, (resp) => {
-      this.parseResponse(resp);
+    console.log('adding', text);
+
+    fetch('http://127.0.0.1:3000/api/movies')
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      json.forEach((movie) => {
+        this.parseResponse(movie);
+      });
     });
   }
 
   parseResponse(resp) {
     const obj = {};
-    obj.title = resp['show_title'];
+    // obj.title = resp['show_title'];
+    obj.title = resp.title;
     obj.year = resp['release_year'];
     obj.rating = resp.rating;
     obj.description = resp.summary;
