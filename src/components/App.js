@@ -13,6 +13,7 @@ export class App extends React.Component {
       watched: [],
       watchFilter: false,
     }
+    this.fetchCur();
   }
 
   handleSearchClick(text) {
@@ -32,12 +33,29 @@ export class App extends React.Component {
   }
 
   handleAddClick(text) {
+    const url = 'http://127.0.0.1:3000/api/movies';
+    const title = escape(text);
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ title: title })
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      this.parseResponse(json);
+    });
+  }
+
+  fetchCur() {
     fetch('http://127.0.0.1:3000/api/movies')
     .then((response) => {
       return response.json();
     })
     .then((json) => {
-      console.log('json is', json);
       json.forEach((movie) => {
         this.parseResponse(movie);
       });
@@ -46,8 +64,8 @@ export class App extends React.Component {
 
   parseResponse(resp) {
     const obj = {};
-    // obj.title = resp['show_title'];
-    obj.title = resp.title;
+    obj.title = resp['show_title'];
+    // obj.title = resp.title;
     obj.year = resp['release_year'];
     obj.rating = resp.rating;
     obj.description = resp.summary;
