@@ -3,6 +3,8 @@ const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require("fs"));
 const path = require('path');
 
+
+
 exports.requestHandler = function(req, res) {
   const { url, method } = req;
   console.log(`Serving ${method} for ${url}`);
@@ -15,9 +17,18 @@ exports.requestHandler = function(req, res) {
     // res.setHeader('Content-Type', 'application/json');
 
     if (url === '/api/movies') {
-      res.statusCode = 200;
-
-      res.end(JSON.stringify([{title: 'Hello world'}]));
+      fs.readFileAsync('./movieData/data.js')
+      .then((data) => {
+        return data;
+      })
+      .then((data) => {
+        res.statusCode = 200;
+        res.end(data);
+      })
+      .catch((err) => {
+        res.statusCode = 400;
+        res.end(err);
+      })
     } else if (url.startsWith('/')) {
       let urlPath = path.join(__dirname, '../')
       if (url === '/') {
