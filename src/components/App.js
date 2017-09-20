@@ -32,13 +32,12 @@ export class App extends React.Component {
   }
 
   handleAddClick(text) {
-    console.log('adding', text);
-
     fetch('http://127.0.0.1:3000/api/movies')
     .then((response) => {
       return response.json();
     })
     .then((json) => {
+      console.log('json is', json);
       json.forEach((movie) => {
         this.parseResponse(movie);
       });

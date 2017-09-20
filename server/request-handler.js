@@ -1,14 +1,7 @@
 const request = require('request');
-const fs = require('fs');
+const Promise = require("bluebird");
+const fs = Promise.promisifyAll(require("fs"));
 const path = require('path');
-
-const movies = [
-  {title: 'Mean Girls'},
-  {title: 'Hackers'},
-  {title: 'The Grey'},
-  {title: 'Sunshine'},
-  {title: 'Ex Machina'},
-];
 
 exports.requestHandler = function(req, res) {
   const { url, method } = req;
@@ -23,7 +16,8 @@ exports.requestHandler = function(req, res) {
 
     if (url === '/api/movies') {
       res.statusCode = 200;
-      res.end(JSON.stringify(movies));
+
+      res.end(JSON.stringify([{title: 'Hello world'}]));
     } else if (url.startsWith('/')) {
       let urlPath = path.join(__dirname, '../')
       if (url === '/') {
@@ -31,15 +25,15 @@ exports.requestHandler = function(req, res) {
       } else {
         urlPath += url.slice(1);
       }
-      fs.readFile(urlPath, (err, data) => {
-        if (err) {
-          res.statusCode = 404;
-          res.end();
-        } else {
-          res.statusCode = 200;
-          res.end(data.toString());
-        }
+      fs.readFileAsync(urlPath)
+      .then((data) => {
+        res.statusCode = 200;
+        res.end(data.toString());
       })
+      .catch((err) => {
+        res.statusCode = 404;
+        res.end();
+      });
     }
   } else {
     res.end('hello world');
