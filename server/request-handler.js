@@ -61,8 +61,20 @@ exports.requestHandler = function(req, res) {
       const title = JSON.parse(body).title;
       const reqUrl = `http://netflixroulette.net/api/api.php?title=${title}`;
       request(reqUrl, function (error, response, body) {
-        res.statusCode = 200;
-        res.end(body);
+        let totalMovies;
+        fs.readFileAsync('./movieData/data.js')
+        .then((data) => {
+          return JSON.parse(data);
+        })
+        .then((data) => {
+          console.log('data is', data);
+          data.push(JSON.parse(body));
+          return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
+        })
+        .then(() => {
+          res.statusCode = 200;
+          res.end(body);
+        });
       });
     });
 
