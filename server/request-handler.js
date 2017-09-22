@@ -2,6 +2,7 @@ const request = require('request');
 const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require("fs"));
 const path = require('path');
+const netflix = require('../src/netflixHelper')
 
 // NOTE: Flow for the app:
 // Client "adds" a movies
@@ -60,24 +61,20 @@ exports.requestHandler = function(req, res) {
       const title = JSON.parse(body).title;
       const reqUrl = `http://netflixroulette.net/api/api.php?title=${title}`;
       request(reqUrl, function (error, response, body) {
-        if (JSON.parse(body).errorcode === 404) {
-          res.statusCode = 404;
-          res.end();
-        } else {
-          let totalMovies;
-          fs.readFileAsync('./movieData/data.js')
-          .then((data) => {
-            return JSON.parse(data);
-          })
-          .then((data) => {
-            data.push(JSON.parse(body));
-            return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
-          })
-          .then(() => {
-            res.statusCode = 200;
-            res.end(body);
-          });
-        }
+        let totalMovies;
+        fs.readFileAsync('./movieData/data.js')
+        .then((data) => {
+          return JSON.parse(data);
+        })
+        .then((data) => {
+          console.log('data is', data);
+          data.push(JSON.parse(body));
+          return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
+        })
+        .then(() => {
+          res.statusCode = 200;
+          res.end(body);
+        });
       });
     });
 

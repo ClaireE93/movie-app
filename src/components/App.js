@@ -47,9 +47,6 @@ export class App extends React.Component {
     })
     .then((json) => {
       this.parseResponse(json);
-    })
-    .catch((err) => {
-      console.log('Movie not found');
     });
   }
 
@@ -62,10 +59,7 @@ export class App extends React.Component {
       json.forEach((movie) => {
         this.parseResponse(movie);
       });
-    })
-    .catch((err) => {
-      console.log('error in fetch', err);
-    })
+    });
   }
 
   parseResponse(resp) {
