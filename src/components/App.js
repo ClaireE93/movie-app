@@ -47,6 +47,9 @@ export class App extends React.Component {
     })
     .then((json) => {
       this.parseResponse(json);
+    })
+    .catch((err) => {
+      console.log('No movie');
     });
   }
 

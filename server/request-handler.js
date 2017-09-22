@@ -2,7 +2,17 @@ const request = require('request');
 const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require("fs"));
 const path = require('path');
-const netflix = require('../src/netflixHelper')
+const netflix = require('../src/netflixHelper');
+const redis = require('redis');
+const redisClient = redis.createClient({host : 'localhost', port : 6379});
+
+redisClient.on('ready',function() {
+ console.log("Redis is ready");
+});
+
+redisClient.on('error',function() {
+ console.log("Error in Redis");
+});
 
 // NOTE: Flow for the app:
 // Client "adds" a movies
@@ -23,18 +33,26 @@ exports.requestHandler = function(req, res) {
   if (method === 'GET' || method === 'OPTIONS') {
 
     if (url === '/api/movies') {
-      fs.readFileAsync('./movieData/data.js')
-      .then((data) => {
-        return data; //Keep this .then() in case any parsing is needed
-      })
-      .then((data) => {
+      redisClient.hgetall('Movies', (err, objects) => {
+        const arr = [];
+        for(let key in objects) {
+          arr.push(JSON.parse(objects[key]));
+        }
         res.statusCode = 200;
-        res.end(data);
-      })
-      .catch((err) => {
-        res.statusCode = 400;
-        res.end(err);
-      })
+        res.end(JSON.stringify(arr));
+      });
+      // fs.readFileAsync('./movieData/data.js')
+      // .then((data) => {
+      //   return data; //Keep this .then() in case any parsing is needed
+      // })
+      // .then((data) => {
+      //   res.statusCode = 200;
+      //   res.end(data);
+      // })
+      // .catch((err) => {
+      //   res.statusCode = 400;
+      //   res.end(err.toString());
+      // });
     } else if (url.startsWith('/')) {
       let urlPath = path.join(__dirname, '../')
       if (url === '/') {
@@ -59,22 +77,35 @@ exports.requestHandler = function(req, res) {
     }).on('end', () => {
       body = Buffer.concat(body).toString();
       const title = JSON.parse(body).title;
+      console.log('title is', title);
       const reqUrl = `http://netflixroulette.net/api/api.php?title=${title}`;
       request(reqUrl, function (error, response, body) {
-        let totalMovies;
-        fs.readFileAsync('./movieData/data.js')
-        .then((data) => {
-          return JSON.parse(data);
-        })
-        .then((data) => {
-          console.log('data is', data);
-          data.push(JSON.parse(body));
-          return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
-        })
-        .then(() => {
-          res.statusCode = 200;
-          res.end(body);
-        });
+        console.log('body is', body);
+        const parsedBody = JSON.parse(body);
+        // console.log('error code is', parsedBody.errorCode);
+        if (parsedBody.errorCode === 404) {
+          res.statusCode = 404;
+          res.end('Bad movie')
+        } else {
+          const title = parsedBody.show_title;
+          redisClient.hset('Movies', title, body, () => {
+            res.statusCode = 200;
+            res.end(body);
+          });
+        }
+        // fs.readFileAsync('./movieData/data.js')
+        // .then((data) => {
+        //   return JSON.parse(data);
+        // })
+        // .then((data) => {
+        //   console.log('data is', data);
+        //   data.push(JSON.parse(body));
+        //   return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
+        // })
+        // .then(() => {
+        //   res.statusCode = 200;
+        //   res.end(body);
+        // });
       });
     });
 
