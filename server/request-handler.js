@@ -41,18 +41,6 @@ exports.requestHandler = function(req, res) {
         res.statusCode = 200;
         res.end(JSON.stringify(arr));
       });
-      // fs.readFileAsync('./movieData/data.js')
-      // .then((data) => {
-      //   return data; //Keep this .then() in case any parsing is needed
-      // })
-      // .then((data) => {
-      //   res.statusCode = 200;
-      //   res.end(data);
-      // })
-      // .catch((err) => {
-      //   res.statusCode = 400;
-      //   res.end(err.toString());
-      // });
     } else if (url.startsWith('/')) {
       let urlPath = path.join(__dirname, '../')
       if (url === '/') {
@@ -80,9 +68,7 @@ exports.requestHandler = function(req, res) {
       console.log('title is', title);
       const reqUrl = `http://netflixroulette.net/api/api.php?title=${title}`;
       request(reqUrl, function (error, response, body) {
-        console.log('body is', body);
         const parsedBody = JSON.parse(body);
-        // console.log('error code is', parsedBody.errorCode);
         if (parsedBody.errorCode === 404) {
           res.statusCode = 404;
           res.end('Bad movie')
@@ -93,19 +79,6 @@ exports.requestHandler = function(req, res) {
             res.end(body);
           });
         }
-        // fs.readFileAsync('./movieData/data.js')
-        // .then((data) => {
-        //   return JSON.parse(data);
-        // })
-        // .then((data) => {
-        //   console.log('data is', data);
-        //   data.push(JSON.parse(body));
-        //   return fs.writeFileAsync('./movieData/data.js', JSON.stringify(data));
-        // })
-        // .then(() => {
-        //   res.statusCode = 200;
-        //   res.end(body);
-        // });
       });
     });
 
